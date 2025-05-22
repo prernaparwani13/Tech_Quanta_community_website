@@ -26,23 +26,24 @@ function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#121212] 
-    background-blur text-white  font-['Rajdhani'] shadow-blue-900/30 backdrop-blur-sm">
-      <Navbar className="max-w-7xl mx-auto px-4 text-[#2ECC71]">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0f0f0f]/70 backdrop-blur-md shadow-lg">
+      <Navbar className="max-w-7xl mx-auto px-6 py-2">
         {/* Desktop Nav */}
         <NavBody>
           <NavLink
             to="/"
-            className="z-20 flex items-center space-x-2 px-2 py-1 text-lg font-semibold"
+            className="z-20 flex items-center space-x-2 text-xl font-bold"
           >
             <img
               src="/logo.jpg"
               alt="TechQuanta Logo"
               width={44}
               height={44}
-              className="rounded-full shadow-md"
+              className="rounded-full shadow-[0_0_10px_#2ECC71]"
             />
-            <span className="text-[0.6rem] text-white">Tech<span className="text-[1rem]">Quanta</span></span>
+            <span className="text-white font-['Exo_2'] tracking-wide">
+              Tech<span className="text-[#00BFFF]">Quanta</span>
+            </span>
           </NavLink>
 
           <NavItems
@@ -50,17 +51,26 @@ function Header() {
               ...item,
               isActive: location.pathname === item.link,
             }))}
+            className="text-sm font-semibold space-x-6 text-neutral-300"
+            itemClassName={({ isActive }) =>
+              `transition-all duration-200 hover:text-[#00E6E6] ${
+                isActive ? "text-[#2ECC71]" : ""
+              }`
+            }
           />
 
-          <div className="flex items-center gap-4">
-                         <NavbarButton
-  variant="primary"
-  className="bg-[#00BFFF] hover:bg-[#8E44AD] text-white hover:text-white font-['Exo 2']  px-4 py-1 rounded-full transition-all"
-  onClick={() => window.open("https://docs.google.com/forms/d/e/1FAIpQLSddiwCoTtyjxuvKq6nPvgE6FXDjlMAz-35X2w8XFqscTDcYuw/viewform?usp=header", "_blank")}
->
-  Join
-</NavbarButton>
-          </div>
+          <NavbarButton
+            variant="primary"
+            className="bg-gradient-to-r from-[#00BFFF] to-[#8E44AD] hover:from-[#8E44AD] hover:to-[#00BFFF] text-white px-5 py-1 rounded-full font-semibold shadow-md transition-all hover:scale-105"
+            onClick={() =>
+              window.open(
+                "https://docs.google.com/forms/d/e/1FAIpQLSddiwCoTtyjxuvKq6nPvgE6FXDjlMAz-35X2w8XFqscTDcYuw/viewform?usp=header",
+                "_blank"
+              )
+            }
+          >
+            Join
+          </NavbarButton>
         </NavBody>
 
         {/* Mobile Nav */}
@@ -73,9 +83,11 @@ function Header() {
                   alt="logo"
                   width={40}
                   height={40}
-                  className="rounded-full"
+                  className="rounded-full shadow-md"
                 />
-                <span className="text-white font-['Exo 2']">TechQuanta</span>
+                <span className="text-white font-['Exo_2'] text-lg font-semibold">
+                  TechQuanta
+                </span>
               </NavLink>
             </NavbarLogo>
             <MobileNavToggle
@@ -93,25 +105,24 @@ function Header() {
                 key={idx}
                 to={item.link}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`block py-3 px-4 text-base font-medium rounded transition-colors  font-['Rajdhani'] ${
+                className={`block py-3 px-4 text-base font-medium font-['Rajdhani'] rounded transition-colors ${
                   location.pathname === item.link
                     ? "text-[#2ECC71]"
-                    : "text-neutral-300 hover:text-white"
+                    : "text-neutral-300 hover:text-[#00E6E6]"
                 }`}
               >
                 {item.name}
               </NavLink>
             ))}
 
-            <div className="mt-6 flex flex-col gap-3 px-4 ">
+            <div className="mt-6 flex flex-col gap-3 px-4">
               <NavbarButton
-  variant="primary"
-  className="bg-[#00BFFF] hover:bg-[#8E44AD] text-white hover:text-white font-semibold px-4 py-1 rounded-full transition-all"
-  style={{ boxShadow: "0 0 10px #2ECC71" }}
->
-  Join
-</NavbarButton>
-
+                variant="primary"
+                className="bg-gradient-to-r from-[#00BFFF] to-[#8E44AD] text-white font-semibold px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-all"
+                style={{ boxShadow: "0 0 12px #2ECC71" }}
+              >
+                Join
+              </NavbarButton>
             </div>
           </MobileNavMenu>
         </MobileNav>
