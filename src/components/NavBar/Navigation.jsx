@@ -1,23 +1,10 @@
 // src/components/Header.jsx
 
-import {
-  Navbar,
-  NavBody,
-  NavItems,
-  MobileNav,
-  NavbarLogo,
-  NavbarButton,
-  MobileNavHeader,
-  MobileNavToggle,
-  MobileNavMenu,
-} from "../ui/resizable-navbar";
 import { useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Header() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const navItems = [
     { name: "Community Work", link: "/community-work" },
@@ -26,107 +13,90 @@ function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0f0f0f]/70 backdrop-blur-md shadow-lg">
-      <Navbar className="max-w-7xl mx-auto px-6 py-2">
-        {/* Desktop Nav */}
-        <NavBody>
-          <NavLink
-            to="/"
-            className="z-20 flex items-center space-x-2 text-xl font-bold"
-          >
-            <img
-              src="/logo.jpg"
-              alt="TechQuanta Logo"
-              width={44}
-              height={44}
-              className="rounded-full shadow-[0_0_10px_#2ECC71]"
-            />
-            <span className="text-white font-['Exo_2'] tracking-wide">
-              Tech<span className="text-[#00BFFF]">Quanta</span>
-            </span>
-          </NavLink>
-
-          <NavItems
-            items={navItems.map((item) => ({
-              ...item,
-              isActive: location.pathname === item.link,
-            }))}
-            className="text-sm font-semibold space-x-6 text-neutral-300"
-            itemClassName={({ isActive }) =>
-              `transition-all duration-200 hover:text-[#00E6E6] ${
-                isActive ? "text-[#2ECC71]" : ""
-              }`
-            }
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f0f0f] shadow-md backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        {/* Logo */}
+        <NavLink to="/" className="flex items-center gap-2">
+          <img
+            src="/logo.jpg"
+            alt="TechQuanta Logo"
+            className="w-10 h-10 rounded-full shadow-md"
           />
+          <span className="text-white font-extrabold text-xl tracking-wider font-['Exo_2']">
+            Tech<span className="text-[#00BFFF]">Quanta</span>
+          </span>
+        </NavLink>
 
-          <NavbarButton
-            variant="primary"
-            className="bg-gradient-to-r from-[#00BFFF] to-[#8E44AD] hover:from-[#8E44AD] hover:to-[#00BFFF] text-white px-5 py-1 rounded-full font-semibold shadow-md transition-all hover:scale-105"
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-['Rajdhani']">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.name}
+              to={item.link}
+              className={({ isActive }) =>
+                `transition-all relative before:content-[''] before:absolute before:-bottom-1 before:left-0 before:h-[2px] before:w-0 before:bg-[#2ECC71] before:transition-all hover:before:w-full ${
+                  isActive ? "text-[#2ECC71]" : "text-white hover:text-[#2ECC71]"
+                }`
+              }
+            >
+              {item.name}
+            </NavLink>
+          ))}
+
+          {/* Join Button */}
+          <button
             onClick={() =>
               window.open(
                 "https://docs.google.com/forms/d/e/1FAIpQLSddiwCoTtyjxuvKq6nPvgE6FXDjlMAz-35X2w8XFqscTDcYuw/viewform?usp=header",
                 "_blank"
               )
             }
+            className="ml-4 bg-gradient-to-r from-[#00BFFF] to-[#8E44AD] text-white px-5 py-2 rounded-full shadow-lg hover:scale-105 transition-transform"
           >
             Join
-          </NavbarButton>
-        </NavBody>
+          </button>
+        </nav>
 
-        {/* Mobile Nav */}
-        <MobileNav>
-          <MobileNavHeader>
-            <NavbarLogo>
-              <NavLink to="/" className="flex items-center space-x-2">
-                <img
-                  src="/logo.jpg"
-                  alt="logo"
-                  width={40}
-                  height={40}
-                  className="rounded-full shadow-md"
-                />
-                <span className="text-white font-['Exo_2'] text-lg font-semibold">
-                  TechQuanta
-                </span>
-              </NavLink>
-            </NavbarLogo>
-            <MobileNavToggle
-              isOpen={isMobileMenuOpen}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            />
-          </MobileNavHeader>
+        {/* Hamburger */}
+        <button
+          className="md:hidden text-white text-2xl"
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+        >
+          ☰
+        </button>
+      </div>
 
-          <MobileNavMenu
-            isOpen={isMobileMenuOpen}
-            onClose={() => setIsMobileMenuOpen(false)}
+      {/* Mobile Nav */}
+      {isMobileOpen && (
+        <div className="md:hidden bg-[#121212] text-white px-6 pb-4 pt-2 font-['Rajdhani']">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.name}
+              to={item.link}
+              onClick={() => setIsMobileOpen(false)}
+              className={({ isActive }) =>
+                `block py-2 border-b border-gray-700 ${
+                  isActive ? "text-[#2ECC71]" : "hover:text-[#00BFFF]"
+                }`
+              }
+            >
+              {item.name}
+            </NavLink>
+          ))}
+          <button
+            onClick={() => {
+              setIsMobileOpen(false);
+              window.open(
+                "https://docs.google.com/forms/d/e/1FAIpQLSddiwCoTtyjxuvKq6nPvgE6FXDjlMAz-35X2w8XFqscTDcYuw/viewform?usp=header",
+                "_blank"
+              );
+            }}
+            className="w-full mt-4 bg-gradient-to-r from-[#00BFFF] to-[#8E44AD] text-white px-5 py-2 rounded-full shadow-lg hover:scale-105 transition-transform"
           >
-            {navItems.map((item, idx) => (
-              <NavLink
-                key={idx}
-                to={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`block py-3 px-4 text-base font-medium font-['Rajdhani'] rounded transition-colors ${
-                  location.pathname === item.link
-                    ? "text-[#2ECC71]"
-                    : "text-neutral-300 hover:text-[#00E6E6]"
-                }`}
-              >
-                {item.name}
-              </NavLink>
-            ))}
-
-            <div className="mt-6 flex flex-col gap-3 px-4">
-              <NavbarButton
-                variant="primary"
-                className="bg-gradient-to-r from-[#00BFFF] to-[#8E44AD] text-white font-semibold px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-all"
-                style={{ boxShadow: "0 0 12px #2ECC71" }}
-              >
-                Join
-              </NavbarButton>
-            </div>
-          </MobileNavMenu>
-        </MobileNav>
-      </Navbar>
+            Join
+          </button>
+        </div>
+      )}
     </header>
   );
 }
